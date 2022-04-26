@@ -8,7 +8,7 @@
 
 FILE *arqEntrada;
 int sizex, sizey;
-int n, i;
+int n;
 // Função callback chamada para fazer o desenho
 void Desenha(void)
 {
@@ -38,27 +38,26 @@ void Desenha(void)
 }
 
 void point(void){
-	
-		arqEntrada = fopen ("caminho.txt", "r");
-		glClear(GL_COLOR_BUFFER_BIT); // Limpa a janela de visualização
-     	glColor3f(1.0f, 1.0f, 0.0f);
+	arqEntrada = fopen ("caminho.txt", "r");
+	glClear(GL_COLOR_BUFFER_BIT); // Limpa a janela de visualização
+    glColor3f(1.0f, 1.0f, 0.0f);
 		// Desenha um quadrado preenchido com a cor corrente
- 		glPointSize(10.0);
-		arqEntrada = fopen ("Cidades.txt", "r");
-		
-		fscanf (arqEntrada, "%d\n", &n);
-		for (int x = 1; x <= n; x++) {
-			glPointSize(10.0*x);
-			glColor3f(1.0f, 1.0f, 0.0f+x);
-			glBegin(GL_POINTS);
-			glVertex2f(70+(x*5), 70+(x*5));
+ 	glPointSize(10.0);
+	arqEntrada = fopen ("Cidades.txt", "r");
+	fscanf(arqEntrada, "%d\n", &n);
+	int x,y;
+	for (int i = 1; i <= n; i++) {
+		glPointSize(10.0);
+		glColor3f(1.0f, 1.0f, 0.0f);
+		glBegin(GL_POINTS);
+		fscanf (arqEntrada, "%d %d\n", &x, &y);
+		printf("%d %d \n",x, y);
+		glVertex2f(x, y);
 	};
- //glBegin(GL_POINTS);
-//glVertex2f(70, 70);
 
- glEnd();
+	glEnd();
  
-glFlush();
+	glFlush();
 }
 // Inicializa parâmetros de rendering
 void Inicializa (void)
@@ -90,7 +89,7 @@ void AlteraTamanhoJanela(GLsizei w, GLsizei h)
 int main(int argc, char ** argv) {
 
 
- sizex = 500;
+ sizex =500;
  sizey = 500;
  glutInit(&argc, argv);
  glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
