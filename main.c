@@ -9,34 +9,32 @@
 FILE *arqEntrada;
 int sizex, sizey;
 int n;
-// Função callback chamada para fazer o desenho
-//void Desenha(void)
-//{
-     //float angle, raio_x, raio_y;
-    // int i=1, circle_points = 1;
-     //glMatrixMode(GL_MODELVIEW);
-     //glLoadIdentity();             
-     // Limpa a janela de visualização com a cor de fundo especificada
-     //glClear(GL_COLOR_BUFFER_BIT);
-     // Especifica que a cor corrente é branca
-     //         R     G     B
-    // glColor3f(1.0f, 1.0f, 1.0f);
-     // Especifica o tamanho do pixel
-     //glPointSize(15.0);
-     // Desenha um círculo (elipse) preenchido com a cor corrente
-     //glBegin(GL_LINE_LOOP);
-     //glBegin(GL_CIRCLE);
-	// raio_x = 20.0;
-    // raio_y = 20.0;
-     
-    //angle = (2*PI*i)/circle_points;
-    //glVertex2f(125.0+raio_x*cos(angle),125.0+raio_y*sin(angle));
-    
-    // glEnd();
-     // Executa os comandos OpenGL
-     //glFlush();
-//}
+int matrizCidade[10][10];
+int ponteiroDeViagem=0;
 
+     // Função callback chamada para gerenciar eventos de teclado
+void ProximaParada(unsigned char key, int x, int y)
+{
+		
+if(key == 13){
+	ponteiroDeViagem++;
+	if(ponteiroDeViagem>n){
+	ponteiroDeViagem =0;}
+
+		x=matrizCidade[ponteiroDeViagem-1][0];
+		y=matrizCidade[ponteiroDeViagem-1][1];
+			glPointSize(20.0);
+		glColor3f(1.0f, 0.0f, 0.0f);
+		glBegin(GL_POINTS);
+		glVertex2f(x, y);
+				printf("tecla x: %d y: %d \n",x, y);
+
+	glEnd();
+	glFlush();
+
+}
+			
+}
 void point(void){
 
 	arqEntrada = fopen ("caminho.txt", "r");
@@ -46,7 +44,7 @@ void point(void){
  	glPointSize(10.0);
 	arqEntrada = fopen ("Cidades.txt", "r");
 	fscanf(arqEntrada, "%d\n", &n);
-	int  matrizCidade[n][2];
+	matrizCidade[n][2];
 	int x,y;
 	for (int i = 1; i <= n; i++) {
 		glPointSize(10.0);
@@ -55,17 +53,19 @@ void point(void){
 		fscanf (arqEntrada, "%d %d\n", &x, &y);
 		printf("%d %d \n",x, y);
 		glVertex2f(x, y);
-		matrizCidade[i-1][1] = x;
-		matrizCidade[i-1][2] = y;
+		matrizCidade[i-1][0] = x;
+		matrizCidade[i-1][1] = y;
+		
 	};
 	arqEntrada = fopen ("Cidades.txt", "r");
 		glPointSize(15.0);
 		glColor3f(1.0f, 0.0f, 0.0f);
 		glBegin(GL_POINTS);
 		fscanf (arqEntrada, "%d\n\n%d %d\n",&n, &x, &y);
-		printf("Ponto inicial %d %d \n",x, y);
+		//printf("Ponto inicial %d %d \n",x, y);
 		glVertex2f(x, y);
-	
+    glutSwapBuffers();
+
 	glEnd();
  
 	glFlush();
@@ -99,9 +99,8 @@ void AlteraTamanhoJanela(GLsizei w, GLsizei h)
                            gluOrtho2D (0.0f, 250.0f*w/h, 0.0f, 250.0f);
 }
 
-void ProximaParada (){
-	
-}
+
+
 
 int main(int argc, char ** argv) {
  
@@ -115,7 +114,7 @@ int main(int argc, char ** argv) {
  glutCreateWindow("Círculo");
  glutDisplayFunc(point);
  glutReshapeFunc(AlteraTamanhoJanela);
- //glutKeyboardFunc(ProximaParada);
+ glutKeyboardFunc(ProximaParada);
  Inicializa();
  glutMainLoop();
 
