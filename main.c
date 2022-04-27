@@ -3,8 +3,8 @@
 #include <windows.h>
 #include <math.h>
 #include <GL/glut.h>
-
 #define PI 3.1415926535
+
 
 FILE *arqEntrada;
 FILE * arqSaida;
@@ -13,41 +13,41 @@ int n;
 int matrizCidade[10][10];
 int ponteiroDeViagem=0;
 
-     // Função callback chamada para gerenciar eventos de teclado
-void ProximaParada(unsigned char key, int x, int y)
+
+void Caminhao(int x, int y)
 {
-		
-if(key == 13){
+	glBegin(GL_POINTS);
+	glColor3f(0,0,1);
 
-
-fscanf (arqSaida, "%d\n", &ponteiroDeViagem);
-				printf("ponteiro %d \n",ponteiroDeViagem);
-
-		x=matrizCidade[ponteiroDeViagem-1][0];
-		y=matrizCidade[ponteiroDeViagem-1][1];
-			glPointSize(20.0);
-		glColor3f(1.0f, 0.0f, 0.0f);
-		glBegin(GL_POINTS);
-		glVertex2f(x, y);
-				printf("tecla x: %d y: %d \n",x, y);
-
-	glEnd();
-	glFlush();
+	glVertex3f(x+3.0,y+1.0,0);
+	glVertex3f(x+2, y+1.0,0);
+	glVertex3f(x+2,y+6.0,0);
+	glVertex3f(x+3,y+6.0,0);
+	glVertex3f(x-3.0,y-1.0,0);
+	glVertex3f(x-2, y-1.0,0);
+	glVertex3f(x-2,y-6.0,0);
+	glVertex3f(x-3,y-6.0,0);
+	
+	glVertex3f(x+3.0,y-1.0,0);
+	glVertex3f(x+2, y-1.0,0);
+	glVertex3f(x+2,y-6.0,0);
+	glVertex3f(x+3,y-6.0,0);
+	
+	glVertex3f(x-3.0,y+1.0,0);
+	glVertex3f(x-2, y+1.0,0);
+	glVertex3f(x-2,y+6.0,0);
+	glVertex3f(x-3,y+6.0,0);
 
 }
-			
-}
-void point(void){
-arqSaida = fopen ("caminho.txt", "r");
-	arqEntrada = fopen ("caminho.txt", "r");
-	glClear(GL_COLOR_BUFFER_BIT); // Limpa a janela de visualização
-    glColor3f(1.0f, 1.0f, 0.0f);
-		// Desenha um quadrado preenchido com a cor corrente
- 	glPointSize(10.0);
+
+
+void Cidades (){
 	arqEntrada = fopen ("Cidades.txt", "r");
 	fscanf(arqEntrada, "%d\n", &n);
 	matrizCidade[n][2];
+	
 	int x,y;
+	
 	for (int i = 1; i <= n; i++) {
 		glPointSize(10.0);
 		glColor3f(1.0f, 1.0f, 0.0f);
@@ -59,20 +59,53 @@ arqSaida = fopen ("caminho.txt", "r");
 		matrizCidade[i-1][1] = y;
 		
 	};
+}
+
+// Função callback chamada para gerenciar eventos de teclado
+void ProximaParada(unsigned char key, int x, int y)
+{	
+
+if(key == 13){
+
+		fscanf (arqSaida, "%d\n", &ponteiroDeViagem);
+		printf("ponteiro %d \n",ponteiroDeViagem);
+
+		x=matrizCidade[ponteiroDeViagem-1][0];
+		y=matrizCidade[ponteiroDeViagem-1][1];
+		
+		Caminhao(x, y);
+		
+		printf("Coordenadas atual x: %d y: %d \n",x, y);
+
+
+}
+		glEnd();
+		glFlush();		
+}
+
+
+
+void Desenhar(void){
+	glClear(GL_COLOR_BUFFER_BIT); // Limpa a janela de visualização
+    glColor3f(1.0f, 1.0f, 0.0f);
+    arqSaida = fopen ("caminho.txt", "r");
+    
+    //Iniciando pontos(cidades)
+	Cidades();
+	
+	int x,y;
 	arqEntrada = fopen ("Cidades.txt", "r");
-		glPointSize(15.0);
-		glColor3f(1.0f, 0.0f, 0.0f);
-		glBegin(GL_POINTS);
-		fscanf (arqEntrada, "%d\n\n%d %d\n",&n, &x, &y);
-		//printf("Ponto inicial %d %d \n",x, y);
-		glVertex2f(x, y);
-    glutSwapBuffers();
+	glPointSize(15.0);
+	glColor3f(1.0f, 0.0f, 0.0f);
+	fscanf (arqEntrada, "%d\n\n%d %d\n",&n, &x, &y);
+	
+	//Iniciando quadradro do caminhão	
+	Caminhao(x, y);
 
 	glEnd();
  
 	glFlush();
 }
-//Linhas parametros  
 
 // Inicializa parâmetros de rendering
 void Inicializa (void)
@@ -102,19 +135,18 @@ void AlteraTamanhoJanela(GLsizei w, GLsizei h)
 }
 
 
-
-
 int main(int argc, char ** argv) {
  
 
  sizex =500;
  sizey = 500;
+ 
  glutInit(&argc, argv);
  glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
  glutInitWindowSize(sizex,sizey);
  glutInitWindowPosition(10,10);
  glutCreateWindow("Círculo");
- glutDisplayFunc(point);
+ glutDisplayFunc(Desenhar);
  glutReshapeFunc(AlteraTamanhoJanela);
  glutKeyboardFunc(ProximaParada);
  Inicializa();
