@@ -7,6 +7,7 @@
 #define PI 3.1415926535
 
 FILE *arqEntrada;
+FILE * arqSaida;
 int sizex, sizey;
 int n;
 int matrizCidade[10][10];
@@ -17,9 +18,10 @@ void ProximaParada(unsigned char key, int x, int y)
 {
 		
 if(key == 13){
-	ponteiroDeViagem++;
-	if(ponteiroDeViagem>n){
-	ponteiroDeViagem =0;}
+
+
+fscanf (arqSaida, "%d\n", &ponteiroDeViagem);
+				printf("ponteiro %d \n",ponteiroDeViagem);
 
 		x=matrizCidade[ponteiroDeViagem-1][0];
 		y=matrizCidade[ponteiroDeViagem-1][1];
@@ -36,7 +38,7 @@ if(key == 13){
 			
 }
 void point(void){
-
+arqSaida = fopen ("caminho.txt", "r");
 	arqEntrada = fopen ("caminho.txt", "r");
 	glClear(GL_COLOR_BUFFER_BIT); // Limpa a janela de visualização
     glColor3f(1.0f, 1.0f, 0.0f);
