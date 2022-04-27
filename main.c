@@ -10,34 +10,35 @@ FILE *arqEntrada;
 int sizex, sizey;
 int n;
 // Função callback chamada para fazer o desenho
-void Desenha(void)
-{
-     float angle, raio_x, raio_y;
-     int i=1, circle_points = 1;
-     glMatrixMode(GL_MODELVIEW);
-     glLoadIdentity();             
+//void Desenha(void)
+//{
+     //float angle, raio_x, raio_y;
+    // int i=1, circle_points = 1;
+     //glMatrixMode(GL_MODELVIEW);
+     //glLoadIdentity();             
      // Limpa a janela de visualização com a cor de fundo especificada
-     glClear(GL_COLOR_BUFFER_BIT);
+     //glClear(GL_COLOR_BUFFER_BIT);
      // Especifica que a cor corrente é branca
      //         R     G     B
-     glColor3f(1.0f, 1.0f, 1.0f);
+    // glColor3f(1.0f, 1.0f, 1.0f);
      // Especifica o tamanho do pixel
-     glPointSize(15.0);
+     //glPointSize(15.0);
      // Desenha um círculo (elipse) preenchido com a cor corrente
      //glBegin(GL_LINE_LOOP);
      //glBegin(GL_CIRCLE);
-	 raio_x = 20.0;
-     raio_y = 20.0;
+	// raio_x = 20.0;
+    // raio_y = 20.0;
      
-        angle = (2*PI*i)/circle_points;
-        glVertex2f(125.0+raio_x*cos(angle),125.0+raio_y*sin(angle));
+    //angle = (2*PI*i)/circle_points;
+    //glVertex2f(125.0+raio_x*cos(angle),125.0+raio_y*sin(angle));
     
-     glEnd();
+    // glEnd();
      // Executa os comandos OpenGL
-     glFlush();
-}
+     //glFlush();
+//}
 
 void point(void){
+
 	arqEntrada = fopen ("caminho.txt", "r");
 	glClear(GL_COLOR_BUFFER_BIT); // Limpa a janela de visualização
     glColor3f(1.0f, 1.0f, 0.0f);
@@ -45,6 +46,7 @@ void point(void){
  	glPointSize(10.0);
 	arqEntrada = fopen ("Cidades.txt", "r");
 	fscanf(arqEntrada, "%d\n", &n);
+	int  matrizCidade[n][2];
 	int x,y;
 	for (int i = 1; i <= n; i++) {
 		glPointSize(10.0);
@@ -53,12 +55,23 @@ void point(void){
 		fscanf (arqEntrada, "%d %d\n", &x, &y);
 		printf("%d %d \n",x, y);
 		glVertex2f(x, y);
+		matrizCidade[i-1][1] = x;
+		matrizCidade[i-1][2] = y;
 	};
-
+	arqEntrada = fopen ("Cidades.txt", "r");
+		glPointSize(15.0);
+		glColor3f(1.0f, 0.0f, 0.0f);
+		glBegin(GL_POINTS);
+		fscanf (arqEntrada, "%d\n\n%d %d\n",&n, &x, &y);
+		printf("Ponto inicial %d %d \n",x, y);
+		glVertex2f(x, y);
+	
 	glEnd();
  
 	glFlush();
 }
+//Linhas parametros  
+
 // Inicializa parâmetros de rendering
 void Inicializa (void)
 {   
@@ -86,8 +99,12 @@ void AlteraTamanhoJanela(GLsizei w, GLsizei h)
                            gluOrtho2D (0.0f, 250.0f*w/h, 0.0f, 250.0f);
 }
 
-int main(int argc, char ** argv) {
+void ProximaParada (){
+	
+}
 
+int main(int argc, char ** argv) {
+ 
 
  sizex =500;
  sizey = 500;
@@ -98,6 +115,7 @@ int main(int argc, char ** argv) {
  glutCreateWindow("Círculo");
  glutDisplayFunc(point);
  glutReshapeFunc(AlteraTamanhoJanela);
+ //glutKeyboardFunc(ProximaParada);
  Inicializa();
  glutMainLoop();
 
